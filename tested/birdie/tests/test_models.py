@@ -1,9 +1,17 @@
 import pytest
 
-from mixer.backend.django import mixer
+# pytestmark = pytest.mark.django_db
+
+from .. models import Post
+# @pytest.mark.django_db
+# def test_creation(post_factory):
+#     post_created = post_factory()
+#     assert post_created.id == 1, 'Should be 1'
 
 class TestPost:
-    def test_model(self):
-        '''no instance of Post exists yet. first pk is 1'''
-        obj = mixer.blend('birdie.Post')
-        assert obj.pk == 1, 'Should create a Post instance'
+    pytestmark = pytest.mark.django_db
+    def test_creation(self, post_factory):
+        post_created = post_factory()
+        post = Post.objects.get(id = post_created.id)
+        print(f'body:{post.body}')
+        assert post.id == 1, 'Should be 1'
