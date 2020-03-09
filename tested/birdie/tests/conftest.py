@@ -1,5 +1,6 @@
 import pytest
 import factory.fuzzy
+from faker import Faker
 
 from pytest_factoryboy import register
 
@@ -26,3 +27,12 @@ def post_form_short_text():
 @pytest.fixture()
 def post_form_long_text():
     return {'body': factory.fuzzy.FuzzyText(length=50).fuzz()}
+
+@pytest.fixture()
+def post_form_message():
+    fake = Faker()
+    while True:
+        message = fake.text()
+        if len(message) > 20:
+            break
+    return {'body': message}
